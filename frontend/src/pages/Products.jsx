@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { addItem } from "../redux/cartSlice";
 
 // 🔥 Your LIVE backend URL
-const API_URL = "https://fullstack-dashboard.onrender.com/api/products";
+const API_URL = "https://fullstack-dashboard-ybrk.onrender.com/api/products";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
