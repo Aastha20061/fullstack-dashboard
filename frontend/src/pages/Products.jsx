@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addItem } from "../redux/cartSlice";
 
+// 🔥 Your LIVE backend URL
+const API_URL = "https://fullstack-dashboard.onrender.com/api/products";
+
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
@@ -10,9 +13,11 @@ export default function Products() {
 
   const dispatch = useDispatch();
 
+  // 📦 Fetch products
   const fetchProducts = () => {
-    axios.get("http://localhost:5000/api/products")
-      .then(res => setProducts(res.data));
+    axios.get(API_URL)
+      .then(res => setProducts(res.data))
+      .catch(err => console.error("Fetch error:", err));
   };
 
   useEffect(() => {
@@ -20,23 +25,29 @@ export default function Products() {
   }, []);
 
   // ➕ Add product
- const addProduct = () => {
-  console.log("Button clicked"); // ✅ check click
+  const addProduct = () => {
+    console.log("Button clicked");
 
-  axios.post("http://localhost:5000/api/products", {
-    name,
-    price: Number(price)
-  })
-  .then(res => {
-    console.log("Product added:", res.data); // ✅ success log
-    setName("");
-    setPrice("");
-    fetchProducts();
-  })
-  .catch(err => {
-    console.error("Error:", err); // ❌ error log
-  });
-};
+    // ✅ Validation
+    if (!name || !price) {
+      alert("Please enter product name and price");
+      return;
+    }
+
+    axios.post(API_URL, {
+      name,
+      price: Number(price)
+    })
+    .then(res => {
+      console.log("Product added:", res.data);
+      setName("");
+      setPrice("");
+      fetchProducts(); // refresh list
+    })
+    .catch(err => {
+      console.error("Error:", err);
+    });
+  };
 
   return (
     <div>
